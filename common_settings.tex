@@ -1,0 +1,70 @@
+\usepackage[dvipdfmx]{color}
+\usepackage{bm}
+\usepackage{amssymb}%% for because
+\usepackage{braket}%% for Set (| and half-space before/after |)
+\usepackage{multirow}
+\usepackage{ifthen}%% for ifthenelse
+
+%% mathtools
+\let\refeq=\relax
+\usepackage{mathtools}%% for cal or coloneqq
+
+%% for subcaption
+\usepackage[labelformat=simple,skip=1pt]{subcaption}
+\captionsetup{compatibility=false}
+\renewcommand{\thesubfigure}{(\alph{subfigure})}%% for show subcaption's reference with parentheses
+
+% TODO
+\newcommand{\TODO}[1]{\fbox{{\bf TODO:}#1}}
+\newcommand{\TODOCOM}[1]{#1}
+
+\renewcommand{\TODO}[1]{}
+\renewcommand{\TODOCOM}[1]{}
+
+% switch language
+\newcommand\myswitchlang[2]{
+  \ifx\mypaperlang\empty
+  #1
+  \else
+  #2
+  \fi
+}
+%% \def\mypaperlang{}
+\def\mypaperlang{ja}
+
+%% hightlight
+%% \newcommand{\modifiedcolor}{\color{red}}
+\newcommand{\modifiedcolor}{\color{black}}
+\newcommand{\defaultcolor}{\color{black}}
+
+%% alias
+\newcommand{\doublealias}[5]{
+  \ifcsname#1\endcsname
+    \ifcsname#2\endcsname
+      \message{[doublealias] Do nothing because #1 and #2 is already defined!!!}
+      \else
+      \newcommand{#4}[1]{{#3{##1}}}
+    \fi
+  \else
+    \ifcsname#2\endcsname
+      \newcommand{#3}[1]{{#4{##1}}}
+    \else
+      \newcommand{#3}[1]{#5}
+      \newcommand{#4}[1]{#5}
+    \fi
+  \fi
+}
+
+% reference, label
+\doublealias{figref}{reffig}{\figref}{\reffig}{{図\ref{figure:#1}}}
+\doublealias{figlab}{labfig}{\figlab}{\labfig}{\label{figure:#1}}
+
+%% \renewcommand{\eqref}[1]{Eq.(\ref{eq:#1})}
+\doublealias{refeq}{eqref}{\refeq}{\eqref}{Eq.(\ref{eq:#1})}
+\doublealias{eqlab}{labeq}{\eqlab}{\labeq}{\label{eq:#1}}
+
+\doublealias{tabref}{reftab}{\tabref}{\reftab}{Table.\ref{table:#1}}
+\doublealias{tablab}{labtab}{\tablab}{\labtab}{\label{table:#1}}
+
+\doublealias{secref}{refsec}{\secref}{\refsec}{Sec.\ref{section:#1}}
+\doublealias{seclab}{labsec}{\seclab}{\labsec}{\label{section:#1}}
