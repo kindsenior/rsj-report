@@ -53,3 +53,23 @@ ifeq ($(OS), Darwin)
 	brew tap caskroom/cask && brew cask install -v mactex && sudo tlmgr update --self --all
 endif
 endif
+
+# upload settings
+SSH_USER = k-kojima
+YEAR = 2020
+THESIS = rsj
+
+UPLOADNAME = $(shell date +%s)
+TARGET_DIR = $(THESIS)$(YEAR)
+TARGET = main
+BUILD_DIR = .
+upload: $(BUILD_DIR)/$(TARGET)_s.pdf
+	ssh $(SSH_USER)@www mkdir -p /home/jsk/$(SSH_USER)/public_html/Documents/$(TARGET_DIR)
+	scp $< $(SSH_USER)@www:/home/jsk/$(SSH_USER)/public_html/Documents/$(TARGET_DIR)/$(SSH_USER)_$(TARGET_DIR)-$(UPLOADNAME).pdf
+	ssh $(SSH_USER)@www ln -sf /home/jsk/$(SSH_USER)/public_html/Documents/$(TARGET_DIR)/$(SSH_USER)_$(TARGET_DIR)-$(UPLOADNAME).pdf /home/jsk/$(SSH_USER)/public_html/Documents/$(TARGET_DIR)/$(SSH_USER)_$(TARGET_DIR).pdf
+	 # scp $< aries:/home/jsk/inaba/$(YEAR)/master/paper/$(SSH_USER)_$(TARGET_DIR).pdf
+
+compress: $(BUILD_DIR)/$(TARGET)_s.pdf
+
+$(BUILD_DIR)/$(TARGET)_s.pdf: $(BUILD_DIR)/$(TARGET).pdf
+	$(MUTE)gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/prepress -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$(BUILD_DIR)/$(TARGET)_gs.pdf $<
