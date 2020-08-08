@@ -16,4 +16,4 @@ if ($^O eq 'darwin') {
 } elsif ($^O eq 'linux') {
     $pdf_previewer = 'evince';
 }
-$preview_continuous_mode = 1;
+# $preview_continuous_mode = 1;
